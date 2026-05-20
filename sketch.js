@@ -11,6 +11,7 @@
 
 //sushi image
 let sushiBG;
+let charecterImg;
 
 let player = {
   x: 200, // horizontal position (centre of blob)
@@ -49,6 +50,7 @@ let floorY;
 
 function preload() {
   sushiBG = loadImage("assets/images/sushi.webp");
+  charecterImg = loadImage("assets/images/charecter.png");
 }
 // ============================================================
 // setup()
@@ -158,39 +160,11 @@ function applyPhysics() {
 // styles set here don't affect other drawing functions.
 // ------------------------------------------------------------
 function drawPlayer() {
-  push(); // save current drawing settings
-
-  // Teal fill, no outline
-  fill(0, 200, 180);
-  noStroke();
-
-  // Draw a circle-ish shape with noisy edges
-  beginShape();
-  let numPoints = 48; // more points = smoother shape
-  for (let i = 0; i < numPoints; i++) {
-    let angle = (TWO_PI / numPoints) * i;
-
-    // noise() returns a smooth random value between 0 and 1.
-    // We use it to push each vertex in or out slightly.
-    let noiseVal = noise(cos(angle) * 0.8 + blobT, sin(angle) * 0.8 + blobT);
-
-    // map() converts noise (0–1) to a radius offset (-8 to +8 pixels)
-    let r = player.r + map(noiseVal, 0, 1, -8, 8);
-
-    // Convert polar coordinates (angle, radius) to x/y
-    let vertX = player.x + cos(angle) * r;
-    let vertY = player.y + sin(angle) * r;
-    vertex(vertX, vertY);
-  }
-  endShape(CLOSE);
-
-  // Draw two simple eyes
-  fill(10);
-  ellipse(player.x - 8, player.y - 6, 8, 8);
-  ellipse(player.x + 8, player.y - 6, 8, 8);
-
-  pop(); // restore drawing settings
+  imageMode(CENTER);
+  image(characterImg, player.x, player.y, player.r * 2, player.r * 2);
 }
+
+
 
 // ------------------------------------------------------------
 // drawFloor()
