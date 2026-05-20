@@ -40,4 +40,6 @@ No external assets used. All visuals are generated with p5.js.
 
 ## References
 
-N/A
+[1]
+Brita Britnell. 2026. The Crunchiest Cucumber Rolls I’ve Ever Made at Home. Food with Feeling. Retrieved May 20, 2026 from https://foodwithfeeling.com/cucumber-roll/
+‌
