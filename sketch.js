@@ -48,7 +48,7 @@ let blobT = 0; // time input for noise — increases each frame
 let floorY;
 
 function preload() {
-  sushiBG = loadImage("sushi.webp");
+  sushiBG = loadImage("assets/images/sushi.webp");
 }
 // ============================================================
 // setup()
