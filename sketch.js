@@ -9,8 +9,8 @@
 // we store everything about the player in one object.
 // ------------------------------------------------------------
 
-// added a global variable
-let bgImg;
+//sushi image
+let sushiBG;
 
 let player = {
   x: 200, // horizontal position (centre of blob)
@@ -47,10 +47,9 @@ let blobT = 0; // time input for noise — increases each frame
 // Floor position — where the ground is
 let floorY;
 
-function preload(){
-  bgImg = loadImage('background.webp');
+function preload() {
+  sushiBG = loadImage("sushi.wedp"); 
 }
-
 // ============================================================
 // setup()
 // Runs once at the very start of the sketch.
@@ -69,7 +68,7 @@ function setup() {
 // apply physics, and draw everything.
 // ============================================================
 function draw() {
-  background(10); // near-black background
+image(sushiBG, 0, 0, width, height);
 
   drawFloor();
   handleInput();
