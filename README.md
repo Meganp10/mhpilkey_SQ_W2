@@ -39,7 +39,12 @@ The console will show any errors in your sketch.
 No external assets used. All visuals are generated with p5.js.
 
 ## References
-
+//background img
 [1]
 Brita Britnell. 2026. The Crunchiest Cucumber Rolls I’ve Ever Made at Home. Food with Feeling. Retrieved May 20, 2026 from https://foodwithfeeling.com/cucumber-roll/
+
+//charecter img
+[1]
+Wendra Kisdamawan. 2026. A cartoon character holding chopsticks and giving the peace sign. Vecteezy. Retrieved May 20, 2026 from https://www.vecteezy.com/vector-art/65965196-a-cartoon-character-holding-chopsticks-and-giving-the-peace-sign 
+‌
 ‌
