@@ -90,7 +90,8 @@ function setup() {
 // apply physics, resolve collisions, and draw everything.
 // ============================================================
 function draw() {
-  background(10);
+  imageMode(CORNER);
+image(sushiBG, 0, 0, width, height); 
 
   handleInput();
   applyPhysics();
@@ -247,34 +248,16 @@ function drawPlatforms() {
 // styles set here don't affect other drawing functions.
 // ------------------------------------------------------------
 function drawPlayer() {
-  push(); // save current drawing settings
 
-  fill(0, 200, 180); // teal
-  noStroke();
+  imageMode(CENTER);
 
-  beginShape();
-  let numPoints = 48; // more points = smoother shape
-  for (let i = 0; i < numPoints; i++) {
-    let angle = (TWO_PI / numPoints) * i;
-
-    // noise() returns a smooth random value between 0 and 1.
-    // We use it to push each vertex in or out slightly.
-    let noiseVal = noise(cos(angle) * 0.8 + blobT, sin(angle) * 0.8 + blobT);
-
-    // map() converts noise (0–1) to a radius offset (-7 to +7 pixels)
-    let r = player.r + map(noiseVal, 0, 1, -7, 7);
-
-    // Convert polar coordinates (angle, radius) to x/y
-    vertex(player.x + cos(angle) * r, player.y + sin(angle) * r);
-  }
-  endShape(CLOSE);
-
-  // Draw two simple eyes
-  fill(10);
-  ellipse(player.x - 7, player.y - 5, 7, 7);
-  ellipse(player.x + 7, player.y - 5, 7, 7);
-
-  pop(); // restore drawing settings
+  image(
+    characterImg,
+    player.x,
+    player.y,
+    player.r * 2.5,
+    player.r * 2.5
+  );
 }
 
 // ------------------------------------------------------------
