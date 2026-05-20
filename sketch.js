@@ -75,7 +75,10 @@ function setup() {
 // apply physics, and draw everything.
 // ============================================================
 function draw() {
-image(sushiBG, 0, 0, width, height);
+  clear(); // clears previous frame
+  image(sushiBG, 0, 0, width, height);
+
+
 
   drawFloor();
   handleInput();
@@ -83,8 +86,9 @@ image(sushiBG, 0, 0, width, height);
   drawPlayer();
   drawHUD();
 
-  blobT += 0.015; // advance blob wobble animation each frame
+  blobT += 0.015;
 }
+
 
 // ------------------------------------------------------------
 // handleInput()
