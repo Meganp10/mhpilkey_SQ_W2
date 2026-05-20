@@ -75,10 +75,11 @@ function setup() {
 // apply physics, and draw everything.
 // ============================================================
 function draw() {
-  clear(); // clears previous frame
+  background(0);
+
+  // sushi background fills entire canvas
+  imageMode(CORNER);
   image(sushiBG, 0, 0, width, height);
-
-
 
   drawFloor();
   handleInput();
