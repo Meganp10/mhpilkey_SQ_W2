@@ -8,6 +8,10 @@
 // Instead of separate variables (playerX, playerY, playerVX...),
 // we store everything about the player in one object.
 // ------------------------------------------------------------
+
+// added a global variable
+let bgImg;
+
 let player = {
   x: 200, // horizontal position (centre of blob)
   y: 100, // vertical position (centre of blob)
@@ -42,6 +46,10 @@ let blobT = 0; // time input for noise — increases each frame
 
 // Floor position — where the ground is
 let floorY;
+
+function preload(){
+  bgImg = loadImage('background.webp');
+}
 
 // ============================================================
 // setup()
