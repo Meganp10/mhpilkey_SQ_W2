@@ -10,8 +10,11 @@
 // ------------------------------------------------------------
 
 //sushi image
+//sushi image
 let sushiBG;
-let chaImg;
+let characterImg; 
+
+
 
 let player = {
   x: 200, // horizontal position (centre of blob)
@@ -50,8 +53,10 @@ let floorY;
 
 function preload() {
   sushiBG = loadImage("assets/images/sushi.webp");
-  characterImg = loadImage("assets/images/character.png");
+  characterImg = loadImage("assets/images/character.png"); 
 }
+
+
 // ============================================================
 // setup()
 // Runs once at the very start of the sketch.
