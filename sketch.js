@@ -1,34 +1,53 @@
 // ============================================================
-// Week 2 Example 1: Movement, Gravity, and Collision
+// Week 2 Example 2: Platformer with Platforms Array
 // ============================================================
 
 // ------------------------------------------------------------
-// THE PLAYER OBJECT
-// An object groups related data together in one place.
-// Instead of separate variables (playerX, playerY, playerVX...),
-// we store everything about the player in one object.
+// PLATFORMS ARRAY
+// Each platform is an object with x, y, width, and height.
+// x and y are the TOP-LEFT corner (same as rect()).
+//
+// Storing platforms in an array means:
+//   - We can loop through all of them with one for loop
+//   - Adding a new platform = adding one line of data
+//   - Later we can load this data from a JSON file instead
+
 // ------------------------------------------------------------
-
-//sushi image
-//sushi image
+// IMAGES
+// ------------------------------------------------------------
 let sushiBG;
-let characterImg; 
+let characterImg;
 
+// ------------------------------------------------------------
+let platforms = [
+  // { x, y, w, h }
+  { x: 0,   y: 410, w: 800, h: 40 }, // ground (full width floor)
+  { x: 80,  y: 310, w: 120, h: 16 }, // left low platform
+  { x: 280, y: 240, w: 140, h: 16 }, // centre platform
+  { x: 500, y: 170, w: 120, h: 16 }, // right high platform
+  { x: 160, y: 150, w: 100, h: 16 }, // left high platform
+  { x: 360, y: 320, w: 110, h: 16 }, // centre low platform
+  { x: 620, y: 290, w: 130, h: 16 }, // far right platform
+];
 
-
+// ------------------------------------------------------------
+// PLAYER OBJECT — same structure as Example 1
+// w and h are added here for use in collision detection.
+// ------------------------------------------------------------
 let player = {
-  x: 200, // horizontal position (centre of blob)
+  x: 100,
+  y: 100,
 
-  vx: 0, // horizontal velocity — how fast we're moving left/right
-  vy: 0, // vertical velocity — how fast we're moving up/down
+  vx: 0, // horizontal velocity
+  vy: 0, // vertical velocity
 
-  r: 24, // radius of the blob shape
+  r: 20, // visual radius for blob drawing and collision
 
   // Movement tuning — change these to adjust how the game feels
-  speed: 0.5,     // horizontal acceleration per frame
-  maxSpeed: 4,    // maximum horizontal speed
+  speed: 0.55,    // horizontal acceleration per frame
+  maxSpeed: 4.5,  // maximum horizontal speed
   jumpForce: -12, // upward velocity applied when jumping (negative = upward)
-  friction: 0.8,  // horizontal slowdown when no key is pressed (0–1, lower = more friction)
+  friction: 0.78, // horizontal slowdown when no key is pressed (0–1, lower = more friction)
 
   onGround: false, // tracks whether the player is standing on something
 };
@@ -36,59 +55,53 @@ let player = {
 // ------------------------------------------------------------
 // PHYSICS CONSTANTS
 // Defined outside the player object so they can be shared
-// across multiple objects later (e.g. enemies)
+// across multiple objects (e.g. enemies)
 // ------------------------------------------------------------
 const GRAVITY = 0.6; // downward force added to vy every frame
 
-// ------------------------------------------------------------
-// NOISE BLOB ANIMATION
-// We use p5's noise() function to make the blob edges wobble
-// organically. blobT increases each frame to animate the wobble.
-// ------------------------------------------------------------
-let blobT = 0; // time input for noise — increases each frame
+// Blob animation time — increases each frame to animate the wobble
+let blobT = 0;
 
-// Floor position — where the ground is
-let floorY;
+// Platform colour stored as an array so it can be reused easily
+const PLATFORM_COLOR = [255, 160, 50]; // warm orange
+
 
 function preload() {
   sushiBG = loadImage("assets/images/sushi.webp");
-  characterImg = loadImage("assets/images/character.png"); 
+  characterImg = loadImage("assets/images/character.png");
 }
-
 
 // ============================================================
 // setup()
 // Runs once at the very start of the sketch.
-// Sets up the canvas and positions the player on the floor.
+// Sets up the canvas and positions the player on the ground.
 // ============================================================
 function setup() {
   createCanvas(800, 450);
-  floorY = height - 40;         // ground sits 40px from the bottom
-  player.y = floorY - player.r; // start the player sitting on the floor
+
+  // Place player on top of the ground platform (index 0 in the array)
+  player.y = platforms[0].y - player.r;
 }
 
 // ============================================================
 // draw()
 // Runs repeatedly in a loop after setup() finishes.
 // Each frame we clear the background, handle input,
-// apply physics, and draw everything.
+// apply physics, resolve collisions, and draw everything.
 // ============================================================
 function draw() {
-  background(0);
+  background(10);
 
-  // sushi background fills entire canvas
-  imageMode(CORNER);
-  image(sushiBG, 0, 0, width, height);
-
-  drawFloor();
   handleInput();
   applyPhysics();
+  resolvePlatformCollisions();
+
+  drawPlatforms();
   drawPlayer();
   drawHUD();
 
-  blobT += 0.015;
+  blobT += 0.015; // advance blob wobble animation each frame
 }
-
 
 // ------------------------------------------------------------
 // handleInput()
@@ -137,7 +150,8 @@ function handleInput() {
 // Each frame we:
 //   1. Add gravity to vertical velocity (vy)
 //   2. Move the player by its velocity (vx, vy)
-//   3. Check if it has landed on the floor
+//   3. Reset onGround so collision can set it again
+//   4. Handle falling off the bottom of the canvas
 // ------------------------------------------------------------
 function applyPhysics() {
   // 1. Apply gravity — pulls the player down every frame
@@ -147,18 +161,82 @@ function applyPhysics() {
   player.x += player.vx;
   player.y += player.vy;
 
-  // 3. Floor collision
-  // If the bottom of the blob goes below the floor, push it back up.
-  if (player.y + player.r >= floorY) {
-    player.y = floorY - player.r; // snap to floor
-    player.vy = 0;                // stop falling
-    player.onGround = true;       // allow jumping again
-  } else {
-    player.onGround = false;
+  // 3. Keep player inside canvas horizontally
+  player.x = constrain(player.x, player.r, width - player.r);
+
+  // 4. If player falls below the canvas, reset to start position
+  if (player.y > height + 100) {
+    player.x = 100;
+    player.y = platforms[0].y - player.r;
+    player.vx = 0;
+    player.vy = 0;
   }
 
-  // 4. Wall collision — keep player inside canvas
-  player.x = constrain(player.x, player.r, width - player.r);
+  // Assume in the air until collision check says otherwise
+  player.onGround = false;
+}
+
+// ------------------------------------------------------------
+// resolvePlatformCollisions()
+// Loops through every platform and checks if the player
+// is landing on top of it.
+//
+// The collision check asks three questions:
+//   1. Is the player horizontally overlapping the platform?
+//   2. Is the player falling downward (vy >= 0)?
+//   3. Is the player's bottom at or below the platform top?
+//
+// If all three are true, we snap the player to sit on top.
+// This top-only check means the player can jump through
+// platforms from below, which is a common platformer pattern.
+// ------------------------------------------------------------
+function resolvePlatformCollisions() {
+  for (let i = 0; i < platforms.length; i++) {
+    let p = platforms[i];
+
+    // Player's bounding box edges
+    let playerLeft   = player.x - player.r;
+    let playerRight  = player.x + player.r;
+    let playerBottom = player.y + player.r;
+
+    // Platform edges
+    let platLeft  = p.x;
+    let platRight = p.x + p.w;
+    let platTop   = p.y;
+
+    // 1. Check horizontal overlap
+    let overlapsHorizontally = playerRight > platLeft && playerLeft < platRight;
+
+    // 2 & 3. Check if landing on top (falling down onto the platform surface)
+    // The small tolerance (+ 20) prevents the player clipping through
+    // fast-moving platforms or getting stuck on edges.
+    let landingOnTop =
+      player.vy >= 0 &&
+      playerBottom >= platTop &&
+      playerBottom <= platTop + 20;
+
+    if (overlapsHorizontally && landingOnTop) {
+      player.y = platTop - player.r; // snap to platform surface
+      player.vy = 0;                 // stop falling
+      player.onGround = true;        // allow jumping again
+    }
+  }
+}
+
+// ------------------------------------------------------------
+// drawPlatforms()
+// Loops through the platforms array and draws each one.
+// This is the same loop pattern used to draw any collection
+// of objects — enemies, coins, tiles, etc.
+// ------------------------------------------------------------
+function drawPlatforms() {
+  fill(PLATFORM_COLOR[0], PLATFORM_COLOR[1], PLATFORM_COLOR[2]);
+  noStroke();
+
+  for (let i = 0; i < platforms.length; i++) {
+    let p = platforms[i];
+    rect(p.x, p.y, p.w, p.h, 6); // rounded corners
+  }
 }
 
 // ------------------------------------------------------------
@@ -169,20 +247,34 @@ function applyPhysics() {
 // styles set here don't affect other drawing functions.
 // ------------------------------------------------------------
 function drawPlayer() {
-  imageMode(CENTER);
-  image(characterImg, player.x, player.y, player.r * 2, player.r * 2);
-}
+  push(); // save current drawing settings
 
-
-
-// ------------------------------------------------------------
-// drawFloor()
-// A simple rectangle across the bottom of the canvas.
-// ------------------------------------------------------------
-function drawFloor() {
-  fill(40, 120, 110); // dark teal
+  fill(0, 200, 180); // teal
   noStroke();
-  rect(0, floorY, width, height - floorY);
+
+  beginShape();
+  let numPoints = 48; // more points = smoother shape
+  for (let i = 0; i < numPoints; i++) {
+    let angle = (TWO_PI / numPoints) * i;
+
+    // noise() returns a smooth random value between 0 and 1.
+    // We use it to push each vertex in or out slightly.
+    let noiseVal = noise(cos(angle) * 0.8 + blobT, sin(angle) * 0.8 + blobT);
+
+    // map() converts noise (0–1) to a radius offset (-7 to +7 pixels)
+    let r = player.r + map(noiseVal, 0, 1, -7, 7);
+
+    // Convert polar coordinates (angle, radius) to x/y
+    vertex(player.x + cos(angle) * r, player.y + sin(angle) * r);
+  }
+  endShape(CLOSE);
+
+  // Draw two simple eyes
+  fill(10);
+  ellipse(player.x - 7, player.y - 5, 7, 7);
+  ellipse(player.x + 7, player.y - 5, 7, 7);
+
+  pop(); // restore drawing settings
 }
 
 // ------------------------------------------------------------

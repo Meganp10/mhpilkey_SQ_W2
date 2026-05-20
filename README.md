@@ -1,22 +1,21 @@
-# Week 2 Example 1: Movement and Gravity
+# Week 2 Example 2: Platformer with Platforms Array
 
 ## What This Example Demonstrates
 
 > **Note for students:** This section is included in example files only to help you study. Do not include it in your Side Quest submissions.
 
-This example introduces how to move a character using keyboard input, apply gravity, and detect collision with a floor.
+This example builds on Example 1 by replacing the single floor with an array of platforms, and introducing top-only collision detection so the player can land on any of them.
 
-- **Player object** — groups all player data (position, velocity, size, tuning values) into one object instead of separate variables
-- **`keyIsDown()`** — checks if a key is held this frame, allowing smooth continuous movement; different from `keyPressed()` which fires once per press
-- **Velocity** — instead of moving the player directly, we add to `vx` and `vy` each frame and then apply them to position, giving movement a natural feel
-- **`constrain()`** — clamps a value within a min and max range; used here to cap horizontal speed
-- **Friction** — multiplying velocity by a value less than 1 each frame gradually slows the player when no key is pressed
-- **Gravity** — adding a constant to `vy` every frame pulls the player downward
-- **Floor collision** — checks if the player has passed below the floor and snaps them back up
-- **`noise()`** — returns smooth random values used to wobble the blob's edges organically
-- **`map()`** — converts a value from one range to another; used here to turn noise output into a pixel offset
+- **Array of objects** — platforms are stored as a list of objects, each with `x`, `y`, `w`, and `h` properties; adding a new platform only requires adding one line of data
+- **`for` loop** — used to draw and check collisions for every platform without writing separate code for each one; the same pattern applies to enemies, coins, tiles, and any other collection of objects
+- **Bounding box collision** — collision is detected by checking whether the player's edges overlap with a platform's edges horizontally and vertically
+- **Top-only landing** — the check only triggers when the player is falling downward (`vy >= 0`) onto the top surface, so the player can jump up through platforms from below
+- **Collision tolerance** — a small buffer (`+ 20`) prevents the player from clipping through platforms at higher speeds
+- **Reset on fall** — if the player falls off the bottom of the canvas, their position and velocity are reset to the starting point
+- **`keyIsDown()`** — checks if a key is held this frame for smooth continuous movement
+- **`constrain()`** — clamps a value within a range; used to cap speed and keep the player inside the canvas
+- **`noise()` / `map()`** — used together to animate the blob's wobbly edges organically
 - **`push()` / `pop()`** — save and restore drawing settings so styles in one function don't affect others
-- **`beginShape()` / `endShape()`** — draw a custom polygon by specifying each vertex individually
 
 ## Setup and Interaction Instructions
 
@@ -26,6 +25,7 @@ To run the sketch locally, open `index.html` in Google Chrome using Live Server.
 
 - Move left/right: Arrow Keys or A/D
 - Jump: Up Arrow or W
+- Fall off the screen to reset to the start
 
 **Opening the Chrome Console**
 
@@ -39,12 +39,5 @@ The console will show any errors in your sketch.
 No external assets used. All visuals are generated with p5.js.
 
 ## References
-//background img
-[1]
-Brita Britnell. 2026. The Crunchiest Cucumber Rolls I’ve Ever Made at Home. Food with Feeling. Retrieved May 20, 2026 from https://foodwithfeeling.com/cucumber-roll/
 
-//charecter img
-[1]
-Wendra Kisdamawan. 2026. A cartoon character holding chopsticks and giving the peace sign. Vecteezy. Retrieved May 20, 2026 from https://www.vecteezy.com/vector-art/65965196-a-cartoon-character-holding-chopsticks-and-giving-the-peace-sign 
-‌
-‌
+N/A
