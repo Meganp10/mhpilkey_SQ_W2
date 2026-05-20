@@ -18,7 +18,6 @@ let characterImg;
 
 let player = {
   x: 200, // horizontal position (centre of blob)
-  y: 100, // vertical position (centre of blob)
 
   vx: 0, // horizontal velocity — how fast we're moving left/right
   vy: 0, // vertical velocity — how fast we're moving up/down
