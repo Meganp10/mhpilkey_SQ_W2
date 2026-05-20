@@ -20,14 +20,15 @@ let characterImg;
 
 // ------------------------------------------------------------
 let platforms = [
-  // { x, y, w, h }
-  { x: 0,   y: 410, w: 800, h: 40 }, // ground (full width floor)
-  { x: 80,  y: 310, w: 120, h: 16 }, // left low platform
-  { x: 280, y: 240, w: 140, h: 16 }, // centre platform
-  { x: 500, y: 170, w: 120, h: 16 }, // right high platform
-  { x: 160, y: 150, w: 100, h: 16 }, // left high platform
-  { x: 360, y: 320, w: 110, h: 16 }, // centre low platform
-  { x: 620, y: 290, w: 130, h: 16 }, // far right platform
+  { x: 0,   y: 410, w: 800, h: 40 },
+  { x: 200,  y: 310, w: 120, h: 16 },
+  { x: 180, y: 240, w: 140, h: 16 },
+  { x: 400, y: 170, w: 120, h: 16 },
+  { x: 160, y: 150, w: 100, h: 16 },
+
+  { x: 80, y: 320, w: 110, h: 16, touched: false }, // 👈 special one
+
+  { x: 620, y: 290, w: 130, h: 16 },
 ];
 
 // ------------------------------------------------------------
@@ -216,11 +217,17 @@ function resolvePlatformCollisions() {
       playerBottom >= platTop &&
       playerBottom <= platTop + 20;
 
-    if (overlapsHorizontally && landingOnTop) {
-      player.y = platTop - player.r; // snap to platform surface
-      player.vy = 0;                 // stop falling
-      player.onGround = true;        // allow jumping again
-    }
+ if (overlapsHorizontally && landingOnTop) {
+
+  player.y = platTop - player.r;
+  player.vy = 0;
+  player.onGround = true;
+
+  // ONLY this platform reacts
+  if (p.touched === false && p.w === 110 && p.x === 80 && p.y === 320) {
+    p.touched = true;
+  }
+}
   }
 }
 
@@ -231,12 +238,18 @@ function resolvePlatformCollisions() {
 // of objects — enemies, coins, tiles, etc.
 // ------------------------------------------------------------
 function drawPlatforms() {
-  fill(PLATFORM_COLOR[0], PLATFORM_COLOR[1], PLATFORM_COLOR[2]);
   noStroke();
 
   for (let i = 0; i < platforms.length; i++) {
     let p = platforms[i];
-    rect(p.x, p.y, p.w, p.h, 6); // rounded corners
+
+    if (p.touched) {
+      fill(255, 160, 50, 120); // transparent
+    } else {
+      fill(255, 160, 50); // normal
+    }
+
+    rect(p.x, p.y, p.w, p.h, 6);
   }
 }
 
