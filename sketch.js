@@ -11,7 +11,7 @@
 
 //sushi image
 let sushiBG;
-let charecterImg;
+let chaImg;
 
 let player = {
   x: 200, // horizontal position (centre of blob)
@@ -50,7 +50,7 @@ let floorY;
 
 function preload() {
   sushiBG = loadImage("assets/images/sushi.webp");
-  charecterImg = loadImage("assets/images/charecter.png");
+  characterImg = loadImage("assets/images/character.png");
 }
 // ============================================================
 // setup()
