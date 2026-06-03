@@ -18,9 +18,13 @@ To run the sketch locally, open `index.html` in Google Chrome using Live Server.
 The console will show any errors in your sketch.
 
 ## Assets
+| File | Source |
+|------|--------|
+| `assets/images/sushi.webp` | Wendra Kisdamawan [1] |
+| `assets/images/charecter.png` | Brita Britnell [1] |
 
 |File |	Source |
-|assets/images/sushi.webp | Wendra Kisdamawan https://www.vecteezy.com/vector-art/65965196-a-cartoon-character-holding-chopsticks-and-giving-the-peace-sign [1]|
+
 |assets/images/charecter.png | Brita Britnell https://foodwithfeeling.com/cucumber-roll/ [2]|
 
 
