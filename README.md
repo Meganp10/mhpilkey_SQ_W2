@@ -23,11 +23,6 @@ The console will show any errors in your sketch.
 | `assets/images/sushi.webp` | Wendra Kisdamawan [1] |
 | `assets/images/charecter.png` | Brita Britnell [1] |
 
-|File |	Source |
-
-|assets/images/charecter.png | Brita Britnell https://foodwithfeeling.com/cucumber-roll/ [2]|
-
-
 ## References
 
 [1]
