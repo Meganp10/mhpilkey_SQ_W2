@@ -1,21 +1,4 @@
-# Week 2 Example 2: Platformer with Platforms Array
-
-## What This Example Demonstrates
-
-> **Note for students:** This section is included in example files only to help you study. Do not include it in your Side Quest submissions.
-
-This example builds on Example 1 by replacing the single floor with an array of platforms, and introducing top-only collision detection so the player can land on any of them.
-
-- **Array of objects** — platforms are stored as a list of objects, each with `x`, `y`, `w`, and `h` properties; adding a new platform only requires adding one line of data
-- **`for` loop** — used to draw and check collisions for every platform without writing separate code for each one; the same pattern applies to enemies, coins, tiles, and any other collection of objects
-- **Bounding box collision** — collision is detected by checking whether the player's edges overlap with a platform's edges horizontally and vertically
-- **Top-only landing** — the check only triggers when the player is falling downward (`vy >= 0`) onto the top surface, so the player can jump up through platforms from below
-- **Collision tolerance** — a small buffer (`+ 20`) prevents the player from clipping through platforms at higher speeds
-- **Reset on fall** — if the player falls off the bottom of the canvas, their position and velocity are reset to the starting point
-- **`keyIsDown()`** — checks if a key is held this frame for smooth continuous movement
-- **`constrain()`** — clamps a value within a range; used to cap speed and keep the player inside the canvas
-- **`noise()` / `map()`** — used together to animate the blob's wobbly edges organically
-- **`push()` / `pop()`** — save and restore drawing settings so styles in one function don't affect others
+# Side Quest 2 - Megan Pilkey
 
 ## Setup and Interaction Instructions
 
@@ -36,14 +19,17 @@ The console will show any errors in your sketch.
 
 ## Assets
 
-No external assets used. All visuals are generated with p5.js.
+|File |	Source |
+|assets/images/sushi.webp | Wendra Kisdamawan https://www.vecteezy.com/vector-art/65965196-a-cartoon-character-holding-chopsticks-and-giving-the-peace-sign [1]|
+|assets/images/charecter.png | Brita Britnell https://foodwithfeeling.com/cucumber-roll/ [2]|
+
 
 ## References
 
 [1]
 Wendra Kisdamawan. 2026. A cartoon character holding chopsticks and giving the peace sign. Vecteezy. Retrieved May 20, 2026 from https://www.vecteezy.com/vector-art/65965196-a-cartoon-character-holding-chopsticks-and-giving-the-peace-sign
 
-[1]
+[2]
 Brita Britnell. 2026. The Crunchiest Cucumber Rolls I’ve Ever Made at Home. Food with Feeling. Retrieved May 20, 2026 from https://foodwithfeeling.com/cucumber-roll/
 ‌
 ‌
