@@ -21,7 +21,7 @@ The console will show any errors in your sketch.
 | File | Source |
 |------|--------|
 | `assets/images/sushi.webp` | Wendra Kisdamawan [1] |
-| `assets/images/charecter.png` | Brita Britnell [1] |
+| `assets/images/charecter.png` | Brita Britnell [2] |
 
 ## References
 
